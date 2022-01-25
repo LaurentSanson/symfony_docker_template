@@ -1,16 +1,26 @@
-# Symfony Docker
+# Symfony Docker Template
 
-A [Docker](https://www.docker.com/)-based installer and runtime for the [Symfony](https://symfony.com) web framework.
+A [Docker](https://www.docker.com/)-based [Symfony](https://symfony.com) template.
+
+## Docker containers
+
+1. PHP
+2. MYSQL
+3. NGINX
+4. NODE (Uncomment it in docker-compose.yml only if needed. Eg: Once you have installed webpack-encore)
+5. MAILDEV
 
 ## Getting Started
 
 1. If not already done, [install Docker Compose](https://docs.docker.com/compose/install/)
 2. Run `docker-compose build --pull --no-cache` to build fresh images
-3. Run `docker-compose up` (the logs will be displayed in the current shell)
-4. TODO => Installation of sf project
+3. Run `docker-compose up -d`
 5. Open `https://localhost` in your favorite web browser
 6. Run `docker-compose down --remove-orphans` to stop the Docker containers.
 
+## After containers started
+
+Prefix all your commands with `./php`. Example : `./php php -v`
 
 ## Credits
 

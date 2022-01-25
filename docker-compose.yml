@@ -47,15 +47,16 @@ services:
       - php
       - mysql
 
-  node:
-    image: node:latest
-    container_name: node-container
-    volumes:
-      - type: bind
-        source: .
-        target: /var/www
-        consistency: delegated
-    working_dir: /var/www/
+#  node:
+#    image: node:latest
+#    container_name: node-container
+#    command: bash -c 'yarn install && yarn run dev'
+#    volumes:
+#      - type: bind
+#        source: .
+#        target: /var/www
+#        consistency: delegated
+#    working_dir: /var/www/
 
 volumes:
   db-data:
