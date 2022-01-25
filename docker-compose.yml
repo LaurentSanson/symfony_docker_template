@@ -1,21 +1,22 @@
 version: "3.8"
+
 services:
 
   mysql:
     image: mysql
-    container_name: mysql_docker
+    container_name: mysql-container
     command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --init-connect='SET NAMES UTF8;' --innodb-flush-log-at-trx-commit=0
     volumes:
       - db-data:/var/lib/mysql
     ports:
-      - 3306:3306
+      - "3306:3306"
     environment:
       MYSQL_DATABASE: "exemple"
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
 
   maildev:
     image: maildev/maildev
-    container_name: maildev_docker
+    container_name: maildev-container
     command: bin/maildev --web 80 --smtp 25 --hide-extensions STARTTLS
     ports:
       - "8081:80"
@@ -23,26 +24,38 @@ services:
   php:
     build:
       context: .
-    container_name: php_docker
-#    command: bash -c './bin/console server:run 0.0.0.0'
+    container_name: php-container
     volumes:
-      - .:/var/www
+      - type: bind
+        source: .
+        target: /var/www
+        consistency: delegated
     ports:
-      - 8000:8000
+      - "9000:9000"
     environment:
       DATABASE_URL: mysql://root:@database:3306/exemple?serverVersion=${MYSQL_VERSION:-13}
 
-#  node:
-#    image: node:latest
-#    environment:
-#      - NODE_ENV=production
-#    volumes:
-#      - ./:/var/www/mypack
-#    expose:
-#      - "8082"
-#    command: bash -c "yarn --production=false && yarn run watch"
-#    depends_on:
-#      - php
+  nginx:
+    image: nginx:stable-alpine
+    container_name: nginx-container
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/var/www/
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+      - mysql
+
+  node:
+    image: node:latest
+    container_name: node-container
+    volumes:
+      - type: bind
+        source: .
+        target: /var/www
+        consistency: delegated
+    working_dir: /var/www/
 
 volumes:
   db-data:
