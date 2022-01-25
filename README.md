@@ -10,17 +10,36 @@ A [Docker](https://www.docker.com/)-based [Symfony](https://symfony.com) templat
 4. NODE (Uncomment it in docker-compose.yml only if needed. Eg: Once you have installed webpack-encore)
 5. MAILDEV
 
+## What's in there
+
+1. A Symfony skeleton application
+2. Symfony Flex
+3. Annotations
+4. Twig
+5. Doctrine
+6. Maker Bundle
+7. PHP Unit and Dama Doctrine Bundle
+8. Webpack-Encore
+
 ## Getting Started
 
 1. If not already done, [install Docker Compose](https://docs.docker.com/compose/install/)
 2. Run `docker-compose build --pull --no-cache` to build fresh images
 3. Run `docker-compose up -d`
-5. Open `https://localhost` in your favorite web browser
-6. Run `docker-compose down --remove-orphans` to stop the Docker containers.
 
 ## After containers started
 
-Prefix all your commands with `./php`. Example : `./php php -v`
+1. Prefix all your commands with `./php`. Example : `./php php -v`
+
+```bash
+make install #Install the project
+bin/console d:d:c #Create the database
+bin/console d:m:m -n #Play the migrations (if there is any)
+```
+
+2. Open `https://localhost` in your favorite web browser
+3. Run `docker-compose down --volumes --remove-orphans` to stop the Docker containers.
+
 
 ## Credits
 

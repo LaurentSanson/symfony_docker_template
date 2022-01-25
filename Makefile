@@ -6,10 +6,8 @@ project-name := Template
 ## —— Symfony 🎶 ———————————————————————————————————————————————————————————————
 install: composer.lock.installed ## Install project
 
-composer.lock.installed: composer.lock
+composer.lock.installed:
 	composer install
-	yarn install
-	yarn build
 
 composer-validate:
 	composer validate
