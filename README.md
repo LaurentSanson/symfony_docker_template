@@ -7,7 +7,7 @@ A [Docker](https://www.docker.com/)-based [Symfony](https://symfony.com) templat
 1. PHP
 2. MYSQL
 3. NGINX
-4. NODE (Uncomment it in docker-compose.yml only if needed. Eg: Once you have installed webpack-encore)
+4. NODE
 5. MAILDEV
 
 ## What's in there
@@ -19,7 +19,8 @@ A [Docker](https://www.docker.com/)-based [Symfony](https://symfony.com) templat
 5. Doctrine
 6. Maker Bundle
 7. PHP Unit and Dama Doctrine Bundle
-8. Webpack-Encore
+8. PHPStan and PHP CS Fixer
+9. Webpack-Encore
 
 ## Getting Started
 

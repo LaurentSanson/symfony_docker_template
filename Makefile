@@ -13,7 +13,7 @@ composer-validate:
 	composer validate
 
 php-cs-fixer:
-	./vendor/bin/php-cs-fixer fix --diff --config=.php_cs.dist -v --dry-run --using-cache no --ansi
+	./vendor/bin/php-cs-fixer fix --diff --config=.php-cs-fixer.dist.php -v --dry-run --using-cache no --ansi
 
 phpstan:
 	./vendor/bin/phpstan analyze -l max --no-progress  ./src --ansi
@@ -28,7 +28,7 @@ yarn-lint:
 lint: composer.lock.installed composer-validate php-cs-fixer phpstan security-checker yarn-lint
 
 test: composer.lock.installed ## Run test suite
-	php -d xdebug.default_enable=0 -d pcov.enabled=1 ./vendor/bin/paratest --coverage-html ./build/coverage --coverage-clover ./build/clover.xml --log-junit ./build/testreport.xml || true
+	php -d xdebug.default_enable=0 -d pcov.enabled=1 ./build/coverage --coverage-clover ./build/clover.xml --log-junit ./build/testreport.xml || true
 	vendor/bin/coverage-check build/clover.xml 69
 
 clean:  ## Reset project to initial state
