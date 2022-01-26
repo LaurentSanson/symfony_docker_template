@@ -21,6 +21,7 @@ A [Docker](https://www.docker.com/)-based [Symfony](https://symfony.com) templat
 7. PHP Unit and Dama Doctrine Bundle
 8. PHPStan and PHP CS Fixer
 9. Webpack-Encore
+10. Local php security checker
 
 ## Getting Started
 

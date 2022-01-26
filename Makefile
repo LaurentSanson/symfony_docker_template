@@ -21,11 +21,7 @@ phpstan:
 security-checker:
 	./vendor/bin/security-checker --path=$$PWD
 
-yarn-lint:
-	yarn lint --color
-	yarn lint:scss -v -q ./assets
-
-lint: composer.lock.installed composer-validate php-cs-fixer phpstan security-checker yarn-lint
+lint: composer.lock.installed composer-validate php-cs-fixer phpstan security-checker
 
 test: composer.lock.installed ## Run test suite
 	php -d xdebug.default_enable=0 -d pcov.enabled=1 ./build/coverage --coverage-clover ./build/clover.xml --log-junit ./build/testreport.xml || true

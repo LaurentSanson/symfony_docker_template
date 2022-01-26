@@ -118,6 +118,9 @@
     "laminas/laminas-code": {
         "version": "4.5.1"
     },
+    "laurentsanson/local-php-security-checker": {
+        "version": "1.0"
+    },
     "myclabs/deep-copy": {
         "version": "1.10.2"
     },
