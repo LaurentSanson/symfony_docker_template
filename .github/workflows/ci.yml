@@ -4,6 +4,10 @@ jobs:
   build:
     name: Docker Build
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        php-versions: ['8.0']
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -22,6 +26,7 @@ jobs:
   lint:
     name: Lint
     runs-on: ubuntu-latest
+    needs: build
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -48,6 +53,7 @@ jobs:
       - name: PHP-CS-Fixer
         run: make php-cs-fixer
   tests:
+    needs: [build, lint]
     name: Tests
     runs-on: ubuntu-latest
     strategy:
@@ -69,11 +75,6 @@ jobs:
           update: true
       - name: Check PHP Version
         run: php -v
-      - name: Prepare database
-        run: |
-          php bin/console doctrine:database:create
-          php bin/console doctrine:schema:update --force
-          php bin/console doctrine:fixtures:load -n
       ## —— Tests ———————————————————————————————————————————————————————————
       - name: Run functionnal and unit tests
         run: php vendor/bin/paratest
