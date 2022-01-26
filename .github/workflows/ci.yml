@@ -53,7 +53,7 @@ jobs:
         run: php -v
       ## —— Tests ———————————————————————————————————————————————————————————
       - name: Run functionnal and unit tests
-        run: ./vendor/bin/paratest
+        run: php ./vendor/bin/paratest
   build:
     name: Docker Build
     runs-on: ubuntu-latest
