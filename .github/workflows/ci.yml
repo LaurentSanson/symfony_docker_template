@@ -1,28 +1,6 @@
 name: CI
 on: [push]
 jobs:
-  build:
-    name: Docker Build
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: true
-      matrix:
-        php-versions: ['8.0']
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Pull images
-        run: docker-compose pull
-      - name: Start services
-        run: docker-compose up --build -d
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setup PHP, with composer and extensions
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-versions }}
-          extensions: mbstring, xml, ctype, iconv, intl
-          coverage: xdebug
   lint:
     name: Lint
     runs-on: ubuntu-latest
@@ -52,7 +30,7 @@ jobs:
       - name: PHP-CS-Fixer
         run: make php-cs-fixer
   tests:
-    needs: [build, lint]
+    needs: lint
     name: Tests
     runs-on: ubuntu-latest
     strategy:
@@ -76,4 +54,17 @@ jobs:
         run: php -v
       ## —— Tests ———————————————————————————————————————————————————————————
       - name: Run functionnal and unit tests
-        run: php vendor/bin/paratest
+        run: ./vendor/bin/paratest
+  build:
+    name: Docker Build
+    runs-on: ubuntu-latest
+    needs: [lint, tests]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Pull images
+        run: docker-compose pull
+      - name: Start services
+        run: docker-compose up --build -d
+      - name: Checkout
+        uses: actions/checkout@v2
