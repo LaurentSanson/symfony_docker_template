@@ -44,12 +44,11 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
       - name: Install Composer dependencies
         run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
-      # —— Symfony ——————————————————————————————————————————————————————————
-      - name: Check Symfony requirements
-        run: vendor/bin/requirements-checker
-      - name: Check the Symfony console
-        run: bin/console -V
       # —— Code style ——————————————————————————————————————————————————————————
+      - name: PHP Stan
+        run: make phpstan
+      - name: Security Checker
+        run: make security-checker
       - name: PHP-CS-Fixer
         run: make php-cs-fixer
   tests:
