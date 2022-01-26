@@ -1,4 +1,7 @@
 {
+    "brianium/paratest": {
+        "version": "v6.4.1"
+    },
     "composer/pcre": {
         "version": "1.0.1"
     },
@@ -200,6 +203,9 @@
     },
     "psr/log": {
         "version": "3.0.0"
+    },
+    "rregeer/phpunit-coverage-check": {
+        "version": "0.3.1"
     },
     "sebastian/cli-parser": {
         "version": "1.0.1"

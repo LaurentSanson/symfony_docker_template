@@ -18,10 +18,9 @@ A [Docker](https://www.docker.com/)-based [Symfony](https://symfony.com) templat
 4. Twig
 5. Doctrine
 6. Maker Bundle
-7. PHP Unit and Dama Doctrine Bundle
-8. PHPStan and PHP CS Fixer
+7. PHP Unit, Paratest, Coverage-check and Dama Doctrine Bundle
+8. PHPStan, PHP CS Fixer and Local PHP Security Checker
 9. Webpack-Encore
-10. Local php security checker
 
 ## Getting Started
 
@@ -39,9 +38,8 @@ bin/console d:d:c #Create the database
 bin/console d:m:m -n #Play the migrations (if there is any)
 ```
 
-2. Open `https://localhost` in your favorite web browser
+2. Open `https://localhost:8000` in your favorite web browser
 3. Run `docker-compose down --volumes --remove-orphans` to stop the Docker containers.
-
 
 ## Credits
 
