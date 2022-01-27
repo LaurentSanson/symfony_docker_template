@@ -15,10 +15,14 @@ RUN apt-get update \
     &&  docker-php-ext-install \
             pdo pdo_mysql opcache intl zip calendar dom mbstring gd xsl \
 \
-    &&  pecl install apcu && docker-php-ext-enable apcu
+    &&  pecl install \
+            apcu \
+            xdebug \
+    && docker-php-ext-enable \
+            apcu \
+            xdebug
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
 WORKDIR /var/www/
-

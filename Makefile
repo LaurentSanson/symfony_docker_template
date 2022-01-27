@@ -24,8 +24,9 @@ security-checker:
 lint: composer.lock.installed composer-validate php-cs-fixer phpstan security-checker
 
 test: composer.lock.installed ## Run test suite
-	php -d xdebug.default_enable=0 -d pcov.enabled=1 ./vendor/bin/paratest --coverage-html ./build/coverage --coverage-clover ./build/clover.xml --log-junit ./build/testreport.xml || true
-	vendor/bin/coverage-check build/clover.xml 90
+	php -d xdebug.mode=develop -d pcov.enabled=1 ./vendor/bin/paratest --log-junit=./build/testreport.xml || true
+#	php -d xdebug.mode=develop -d pcov.enabled=1 ./vendor/bin/paratest --coverage-html ./build/coverage --coverage-clover=./build/clover.xml --log-junit=./build/testreport.xml || true
+#	vendor/bin/coverage-check ./build/clover.xml 90
 
 clean:  ## Reset project to initial state
 	@rm -rf vendor build composer.lock node_modules var public/assets
