@@ -8,6 +8,8 @@ install: composer.lock.installed ## Install project
 
 composer.lock.installed:
 	composer install
+	yarn install
+	yarn build
 
 composer-validate:
 	composer validate
@@ -24,8 +26,9 @@ security-checker:
 lint: composer.lock.installed composer-validate php-cs-fixer phpstan security-checker
 
 test: composer.lock.installed ## Run test suite
-	php -d xdebug.mode=develop -d pcov.enabled=1 ./vendor/bin/paratest
-#	php -d xdebug.mode=develop -d pcov.enabled=1 ./vendor/bin/paratest --coverage-html ./build/coverage --coverage-clover=./build/clover.xml --log-junit=./build/testreport.xml || true
+	php -d xdebug.mode=off -d pcov.enabled=1 ./vendor/bin/paratest
+#	mkdir -p ./build
+#	php -d xdebug.mode=off -dpcov.enabled=1 ./vendor/bin/paratest --coverage-html /build/coverage --coverage-clover /build/clover.xml --log-junit ./build/testreport.xml || true
 #	vendor/bin/coverage-check ./build/clover.xml 90
 
 clean:  ## Reset project to initial state

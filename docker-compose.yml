@@ -26,10 +26,7 @@ services:
       context: .
     container_name: php-container
     volumes:
-      - type: bind
-        source: .
-        target: /var/www
-        consistency: delegated
+      - ./:/var/www/
     ports:
       - "9000:9000"
     environment:
@@ -46,16 +43,6 @@ services:
     depends_on:
       - php
       - database
-
-  node:
-    image: node:latest
-    container_name: node-container
-    command: bash -c 'yarn install && ./node_modules/.bin/webpack-dev-server --host 0.0.0.0'
-    volumes:
-      - ./:/var/www
-    working_dir: /var/www/
-    ports:
-      - "8080:8080"
 
 volumes:
   db-data:

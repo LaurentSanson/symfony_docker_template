@@ -41,6 +41,8 @@ bin/console d:m:m -n #Play the migrations (if there is any)
 2. Open `https://localhost:8000` in your favorite web browser
 3. Run `docker-compose down --volumes --remove-orphans` to stop the Docker containers.
 
+Once you've added some code, you can delete the first line of the `make test` and uncomment the rest.
+
 ## Credits
 
 Created by [Laurent Sanson](https://github.com/LaurentSanson/).
