@@ -7,8 +7,7 @@ A [Docker](https://www.docker.com/)-based [Symfony](https://symfony.com) templat
 1. PHP
 2. MYSQL
 3. NGINX
-4. NODE
-5. MAILDEV
+4. MAILDEV
 
 ## What's in there
 
