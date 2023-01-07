@@ -27,6 +27,8 @@ RUN apt-get update \
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
-WORKDIR /var/www/
+RUN mkdir /var/www/exemple
+
+WORKDIR /var/www/exemple
 
 RUN npm install --global yarn

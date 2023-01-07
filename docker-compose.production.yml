@@ -1,0 +1,60 @@
+version: "3.8"
+
+services:
+
+  database:
+    image: mysql
+    container_name: mysql-container
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --init-connect='SET NAMES UTF8;' --innodb-flush-log-at-trx-commit=0
+    volumes:
+      - db-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: "exemple"
+      MYSQL_USER: lcdt
+      MYSQL_PASSWORD: lcdt
+      MYSQL_ROOT_PASSWORD: lcdt
+      MYSQL_HOST: '%'
+
+  php:
+    build:
+      context: .
+    container_name: php-container
+    volumes:
+      - ./:/var/www/exemple
+    ports:
+      - "9000:9000"
+    environment:
+      DATABASE_URL: mysql://lcdt:lcdt@database/exemple?serverVersion=${MYSQL_VERSION:-13}
+      APP_ENV: prod
+
+  nginx:
+    image: nginx:stable-alpine
+    container_name: nginx-container
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: always
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+    volumes:
+      - ./:/var/www/exemple
+      - .docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - .docker/certbot/www:/var/www/certbot
+      - .docker/certbot/conf/:/etc/letsencrypt
+    depends_on:
+      - php
+      - database
+    environment:
+      APP_ENV: prod
+
+  certbot:
+    image: certbot/certbot:latest
+    container_name: cerbot-container
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    volumes:
+      - .docker/certbot/www/:/var/www/certbot
+      - .docker/certbot/conf/:/etc/letsencrypt
+
+volumes:
+  db-data:
