@@ -1,38 +1,58 @@
 .DEFAULT_GOAL=help
-project-name := Template
+project-name := BookShop
 
 .PHONY: help
 
 ## —— Symfony 🎶 ———————————————————————————————————————————————————————————————
 install: composer.lock.installed ## Install project
 
+up:
+	@docker-compose up -d
+
+down:
+	@docker-compose down --remove-orphans --volumes
+
+build:
+	@docker-compose build --pull --no-cache
+
 composer.lock.installed:
-	composer install
-	yarn install
-	yarn build
+	@./php composer install
+	@./php yarn install
+	@./php yarn build
 
 composer-validate:
-	composer validate
+	@./php composer validate
 
 php-cs-fixer:
-	./vendor/bin/php-cs-fixer fix --diff --config=.php-cs-fixer.dist.php -v --dry-run --using-cache no --ansi
+	@./php ./vendor/bin/php-cs-fixer fix --diff --config=.php-cs-fixer.dist.php -v --dry-run --using-cache no --ansi
 
 phpstan:
-	./vendor/bin/phpstan analyze -l max --no-progress  ./src --ansi
+	@./php ./vendor/bin/phpstan analyze --memory-limit=-1 -l max --no-progress  ./src --ansi
 
 security-checker:
-	./vendor/bin/security-checker --path=$$PWD
+	@./vendor/bin/security-checker --path=$$PWD
 
-lint: composer.lock.installed composer-validate php-cs-fixer phpstan security-checker
+lint: composer-validate php-cs-fixer phpstan security-checker
 
-test: composer.lock.installed ## Run test suite
-	php -d xdebug.mode=off -d pcov.enabled=1 ./vendor/bin/paratest
-#	mkdir -p ./build
-#	php -d xdebug.mode=off -dpcov.enabled=1 ./vendor/bin/paratest --coverage-html /build/coverage --coverage-clover /build/clover.xml --log-junit ./build/testreport.xml || true
-#	vendor/bin/coverage-check ./build/clover.xml 90
+cc: ## Clear the cache
+	@./php bin/console c:c
+
+cc-test: ## Clear the cache for test env
+	@./php bin/console c:c --env=test
+
+validate-schema:
+	@./php php bin/console d:s:v --env=test
+
+test: composer-validate## Run test suite
+	@./php mkdir -p ./coverage
+	@./php php -d xdebug.mode=coverage ./vendor/bin/paratest --coverage-html=./coverage --coverage-clover=./coverage/clover.xml
+	@./php php -d xdebug.mode=coverage ./vendor/bin/coverage-check ./coverage/clover.xml 93
+	@echo ---------------
+	@echo file://$(shell pwd)/coverage/index.html
+	@echo ---------------
 
 clean:  ## Reset project to initial state
-	@rm -rf vendor build composer.lock node_modules var public/assets
+	@./php rm -rf vendor build composer.lock node_modules var public/assets
 
 ## —— Others 🛠️️ ———————————————————————————————————————————————————————————————
 help: ## Liste des commandes
@@ -45,4 +65,3 @@ help: ## Liste des commandes
 	@echo
 	@echo -e '\033[0;33mTargets: \033[0m'
 	@grep  -hE '(^[a-zA-Z_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[32m%-10s\033[0m %s\n", $$1, $$2}'
-
