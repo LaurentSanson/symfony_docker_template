@@ -23,6 +23,8 @@ RUN apt-get update \
             apcu \
             xdebug;
 
+RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -  \
+    && apt-get install -y nodejs
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 ENV COMPOSER_ALLOW_SUPERUSER=1
