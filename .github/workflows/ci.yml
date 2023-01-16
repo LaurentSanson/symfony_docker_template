@@ -64,7 +64,7 @@ jobs:
           php-version: ${{ matrix.php-versions }}
           coverage: xdebug
           tools: composer:v2
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, mbstring, pdo
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, mbstring, pdo, xdebug
         env:
           update: true
           
