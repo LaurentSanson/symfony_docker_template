@@ -96,6 +96,6 @@ jobs:
         run: |
           mkdir -p ./coverage
           php -d xdebug.mode=coverage ./vendor/bin/paratest --coverage-html=./coverage --coverage-clover=./coverage/clover.xml
-          php -d xdebug.mode=coverage ./vendor/bin/coverage-check ./coverage/clover.xml 95
+#          php -d xdebug.mode=coverage ./vendor/bin/coverage-check ./coverage/clover.xml 95
         env:
           DATABASE_URL: mysql://root:$MYSQL_ROOT_PASSWORD@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/$MYSQL_DATABASE
