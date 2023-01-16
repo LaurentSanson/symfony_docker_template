@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         
       - name: Validate composer.json and composer.lock
         run: composer validate
@@ -19,7 +19,7 @@ jobs:
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
         
       - name: Cache composer dependencies
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -29,13 +29,13 @@ jobs:
         run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
         
       - name: PHP Stan
-        run: make phpstan
+        run: ./vendor/bin/phpstan analyze -l max --no-progress  ./src --ansi
         
       - name: Security Checker
         run: make security-checker
         
       - name: PHP-CS-Fixer
-        run: make php-cs-fixer
+        run: ./vendor/bin/php-cs-fixer fix --diff --config=.php-cs-fixer.dist.php -v --dry-run --using-cache no --ansi
   tests:
     needs: lint
     name: Tests
@@ -56,7 +56,7 @@ jobs:
         php-versions: ['8.0']
     steps:
       - name: Git checkout placeholder-service
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -76,7 +76,7 @@ jobs:
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
       - name: Cache composer dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           # Use composer.json for key, if composer.lock is not committed.
@@ -93,8 +93,11 @@ jobs:
           php bin/console doctrine:schema:update --force
         env:
           DATABASE_URL: mysql://root:$MYSQL_ROOT_PASSWORD@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/$MYSQL_DATABASE
-      
+
       - name: Run functionnal and unit tests
-        run: make test
+        run: |
+          mkdir -p ./coverage
+          php -d xdebug.mode=coverage ./vendor/bin/paratest --coverage-html=./coverage --coverage-clover=./coverage/clover.xml
+          php -d xdebug.mode=coverage ./vendor/bin/coverage-check ./coverage/clover.xml 95
         env:
           DATABASE_URL: mysql://root:$MYSQL_ROOT_PASSWORD@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/$MYSQL_DATABASE

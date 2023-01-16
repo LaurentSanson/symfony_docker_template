@@ -1,5 +1,5 @@
 .DEFAULT_GOAL=help
-project-name := BookShop
+project-name := Example
 
 .PHONY: help
 
