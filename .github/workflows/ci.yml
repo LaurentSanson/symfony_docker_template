@@ -3,7 +3,6 @@ on: [push]
 env:
   MYSQL_ROOT_PASSWORD: password
   MYSQL_DATABASE: example
-  PHP_VERSION: 8.1
 jobs:
   lint:
     name: Lint
@@ -54,7 +53,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php-versions: [PHP_VERSION]
+        php-versions: ['8.1']
     steps:
       - name: Git checkout placeholder-service
         uses: actions/checkout@v3
